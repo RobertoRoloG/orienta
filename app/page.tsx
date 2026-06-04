@@ -1,5 +1,10 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <main className="min-h-screen bg-black text-white">
       
@@ -24,7 +29,10 @@ export default function Home() {
           habilidades y objetivos laborales.
         </p>
 
-        <button className="mt-10 bg-white text-black px-12 py-6 rounded-xl font-semibold hover:scale-105 transition">
+        <button
+          onClick={() => router.push("/test")}
+          className="mt-10 bg-white text-black px-8 py-4 rounded-xl font-semibold hover:scale-105 transition"
+        >
           Comenzar evaluación
         </button>
 
