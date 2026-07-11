@@ -5,7 +5,7 @@ from typing import List
 from app.db.database import get_db
 from app.models.domain import ContactMessage
 from app.models.schemas import ContactMessageCreate, ContactMessageRead, ContactMessageUpdate
-from app.api.deps import get_current_admin_user
+from app.api.deps import get_current_admin
 
 router = APIRouter()
 
@@ -23,12 +23,12 @@ def submit_contact_message(message_in: ContactMessageCreate, db: Session = Depen
     return db_message
 
 @router.get("/", response_model=List[ContactMessageRead])
-def get_contact_messages(db: Session = Depends(get_db), current_user = Depends(get_current_admin_user)):
+def get_contact_messages(db: Session = Depends(get_db), current_user = Depends(get_current_admin)):
     messages = db.query(ContactMessage).order_by(ContactMessage.created_at.desc()).all()
     return messages
 
 @router.put("/{message_id}", response_model=ContactMessageRead)
-def update_contact_message(message_id: int, message_update: ContactMessageUpdate, db: Session = Depends(get_db), current_user = Depends(get_current_admin_user)):
+def update_contact_message(message_id: int, message_update: ContactMessageUpdate, db: Session = Depends(get_db), current_user = Depends(get_current_admin)):
     db_message = db.query(ContactMessage).filter(ContactMessage.id == message_id).first()
     if not db_message:
         raise HTTPException(status_code=404, detail="Mensaje no encontrado")
