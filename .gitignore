@@ -52,3 +52,5 @@ env/
 .coverage
 .env
 
+
+backend/scripts/pruebas_experimentales/
