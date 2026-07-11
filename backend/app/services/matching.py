@@ -111,6 +111,7 @@ def rank_careers(user_profile: Dict[str, float], careers: List[Dict[str, Any]],
         final_match = (test_score * weight_test) + (tastes_score * weight_tastes) + (grades_score * weight_grades)
         
         career_ranked = {
+            "id": career["id"],
             "name": career["name"], 
             "match": round(final_match, 2),
             "breakdown": {

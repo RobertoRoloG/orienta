@@ -1,61 +1,57 @@
 # Orienta
 
-Orienta es una plataforma web para explorar carreras y profesiones compatibles con el perfil del usuario, evaluando sus intereses, habilidades y objetivos laborales mediante un test interactivo.
+Orienta es una plataforma web para explorar carreras y profesiones compatibles con el perfil del usuario. Su objetivo principal es evaluar intereses, habilidades y objetivos laborales mediante un test interactivo para ofrecer recomendaciones de carrera personalizadas.
 
-## Estructura del Proyecto
+El proyecto está diseñado de forma modular y se encuentra en activo desarrollo, por lo que su estructura y funcionalidades actuales están abiertas a posibles cambios, expansiones y mejoras en el futuro.
 
-El proyecto está organizado de forma limpia y modular:
+## Funcionamiento Actual de la Aplicación
 
-- **`/app`**: Aplicación Frontend construida con **Next.js** (App Router) y React.
-- **`/backend`**: API REST del Backend construida con **FastAPI** (Python).
-- **`/public`**: Archivos estáticos públicos (como el favicon).
+En este momento, la plataforma opera bajo una arquitectura cliente-servidor dividida en dos componentes principales que se comunican a través de una API REST:
 
-La lógica de negocio (preguntas, ponderaciones, cálculo de perfiles y afinidad de carreras) reside completamente en el backend, que sirve como fuente de verdad. El frontend se comunica con él a través de endpoints API REST.
+### 1. Backend (FastAPI - Python)
+El backend (`/backend`) actúa como el núcleo lógico y de procesamiento de la aplicación. Es la fuente de la verdad para el cálculo de perfiles y la información de carreras. Sus módulos principales implementados hasta ahora son:
+
+- **Motor de Emparejamiento (Matching):** Un sistema (`services/matching.py`) que evalúa las características del usuario (intereses, habilidades, objetivos) para calcular el porcentaje de afinidad con diferentes carreras.
+- **Catálogo de Carreras:** Endpoints (`api/v1/endpoints/careers.py`) dedicados para proporcionar la lista de profesiones y el detalle de cada una de ellas.
+- **Inteligencia Artificial (LLMs):** Cuenta con integraciones iniciales con modelos de lenguaje (como Gemini) para enriquecer dinámicamente el contenido de las profesiones, analizar perfiles de manera inteligente y brindar recomendaciones precisas.
+- **Datos del Mercado Laboral:** Módulos (`services/market_data.py`) preparados para procesar información del mundo real sobre la demanda, salarios y proyecciones de las distintas profesiones.
+- **Base de Datos:** Almacena la información de manera estructurada utilizando SQLite (`orienta.db`) localmente.
+
+### 2. Frontend (Next.js - React)
+La interfaz de usuario (`/app`) está construida utilizando el marco moderno de **Next.js (App Router)**. Su función es consumir la información estructurada del backend y presentarla al usuario mediante interfaces interactivas, como la visualización detallada de las carreras y, próximamente, el flujo completo del test de orientación.
 
 ## Requisitos Previos
 
-- **Node.js** v18+ y npm
-- **Python** v3.10+
+- **Node.js** (v18+) y npm
+- **Python** (v3.10+)
 
-## Preparación del Entorno
+## Preparación y Ejecución del Entorno
 
-### 1. Backend
-El backend utiliza un entorno virtual de Python. Las dependencias ya vienen instaladas dentro de él:
-- Las dependencias se encuentran en `backend/requirements.txt`.
-- El entorno virtual está ubicado en `backend/.venv`.
+El proyecto está configurado para que puedas arrancar ambos entornos simultáneamente de forma sencilla.
 
-### 2. Frontend
-Instala las dependencias de Next.js desde la raíz del proyecto:
-```bash
-npm install
-```
+### Instalación
+1. El **backend** cuenta con un entorno virtual local (`.venv`) y las dependencias están listadas en `backend/requirements.txt`. (Asegúrate de instalarlas si ejecutas el backend por primera vez de forma aislada).
+2. Para el **frontend**, instala las dependencias de Node en la raíz del proyecto ejecutando:
+   ```bash
+   npm install
+   ```
 
-## Desarrollo
-
-Para arrancar tanto el frontend como el backend de manera simultánea en modo de desarrollo, ejecuta el siguiente comando en la raíz del proyecto:
+### Ejecución Local
+Para levantar tanto el Frontend como el Backend a la vez en modo desarrollo, ejecuta en la raíz del proyecto:
 
 ```bash
 npm run dev
 ```
 
-Este comando utiliza `concurrently` para ejecutar en paralelo:
-- **Next.js** en [http://localhost:3000](http://localhost:3000)
-- **FastAPI** en [http://localhost:8000](http://localhost:8000) (con reload automático)
+Este comando levanta:
+- **Frontend (Next.js):** Disponible en [http://localhost:3000](http://localhost:3000)
+- **Backend (FastAPI):** Disponible en [http://localhost:8000](http://localhost:8000) (con recarga automática ante cambios)
 
-### Comandos individuales
-Si prefieres ejecutarlos por separado en distintas terminales:
+### Ejecución Individual
+Si necesitas ejecutar los servicios por separado:
+- **Frontend:** `npm run dev:frontend`
+- **Backend:** `npm run dev:backend` (en Windows)
 
-**Iniciar Frontend:**
-```bash
-npm run dev:frontend
-```
+## Evolución del Proyecto
 
-**Iniciar Backend (Windows):**
-```bash
-npm run dev:backend
-```
-o manualmente:
-```bash
-cd backend
-.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-```
+Al estar abierto a cambios, los próximos pasos involucrarán la conexión de los componentes visuales del test con la API del backend, el ajuste de los algoritmos de recomendación usando IA y la mejora continua en la experiencia de usuario.

@@ -18,6 +18,7 @@ type UserProfile = {
 };
 
 type RankedCareer = {
+  id: number;
   name: string;
   match: number;
   breakdown: {
@@ -81,17 +82,9 @@ export default function ResultsPage() {
 
   return (
     <div className="min-h-screen bg-black text-white pb-20">
-      {/* Header */}
-      <div className="border-b border-white/10 bg-black/50 sticky top-0 z-10 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
-          <button onClick={() => router.push("/test")} className="text-white/60 hover:text-white transition">
-            <ArrowLeft size={24} />
-          </button>
-          <h1 className="text-xl font-bold">Análisis de Inteligencia Vocacional</h1>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 pt-10 grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="max-w-6xl mx-auto px-6 pt-10">
+        <h1 className="text-3xl font-bold mb-10 text-center">Análisis de Inteligencia Vocacional</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         
         {/* LEFT COLUMN: RADAR CHART */}
         <div className="flex flex-col items-center justify-center animate-in fade-in slide-in-from-left-8 duration-700">
@@ -173,7 +166,10 @@ export default function ResultsPage() {
           </div>
 
           {/* Top 1 */}
-          <div className="bg-gradient-to-br from-emerald-900/40 to-black border border-emerald-500/30 rounded-2xl p-6 mb-8 relative overflow-hidden group hover:border-emerald-500/60 transition">
+          <div 
+            onClick={() => router.push(`/carreras/${mainCareer.id}`)}
+            className="cursor-pointer bg-gradient-to-br from-emerald-900/40 to-black border border-emerald-500/30 rounded-2xl p-6 mb-8 relative overflow-hidden group hover:border-emerald-500 transition"
+          >
             <div className="absolute top-0 right-0 bg-emerald-500 text-black font-bold px-4 py-1 rounded-bl-xl text-sm">
               TOP MATCH
             </div>
@@ -206,7 +202,11 @@ export default function ResultsPage() {
           </h3>
           <div className="space-y-4">
             {alternatives.map((career, idx) => (
-              <div key={career.name} className="border border-white/10 bg-white/5 rounded-xl p-5 hover:bg-white/10 transition">
+              <div 
+                key={career.name} 
+                onClick={() => router.push(`/carreras/${career.id}`)}
+                className="cursor-pointer border border-white/10 bg-white/5 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition"
+              >
                 <div className="flex justify-between items-center">
                   <h4 className="text-lg font-semibold">{career.name}</h4>
                   <span className="text-xl font-bold text-emerald-400">{career.match.toFixed(1)}%</span>
@@ -221,7 +221,7 @@ export default function ResultsPage() {
           </div>
 
         </div>
-
+        </div>
       </div>
     </div>
   );

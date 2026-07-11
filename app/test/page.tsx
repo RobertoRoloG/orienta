@@ -3,9 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Brain, Heart, BookOpen, Check, ArrowRight, ArrowLeft } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 export default function TestPage() {
   const router = useRouter();
+  const { token } = useAuth();
   
   // Steps: 1=Test, 2=Tastes, 3=Grades
   const [step, setStep] = useState(1);
@@ -27,9 +29,9 @@ export default function TestPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch("http://localhost:8000/api/v1/questions").then(res => res.json()),
-      fetch("http://localhost:8000/api/v1/metadata/tags").then(res => res.json()),
-      fetch("http://localhost:8000/api/v1/metadata/subjects").then(res => res.json())
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/questions`).then(res => res.json()),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/metadata/tags`).then(res => res.json()),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/metadata/subjects`).then(res => res.json())
     ]).then(([qData, tData, sData]) => {
       setQuestions(qData);
       setAnswers(Array(qData.length).fill(0));
@@ -66,7 +68,7 @@ export default function TestPage() {
 
     setSubmitting(true);
     try {
-      const scoreRes = await fetch("http://localhost:8000/api/v1/scoring/", {
+      const scoreRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/scoring/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answers }),
@@ -81,7 +83,7 @@ export default function TestPage() {
           score: parseFloat(score as string)
         }));
 
-      const matchRes = await fetch("http://localhost:8000/api/v1/matching/", {
+      const matchRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/matching/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -95,6 +97,28 @@ export default function TestPage() {
 
       localStorage.setItem("userProfile", JSON.stringify(profile));
       localStorage.setItem("rankedCareers", JSON.stringify(rankedCareers));
+
+      // Save to backend if logged in
+      if (token) {
+        try {
+          await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/results/`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              dimension_scores: profile,
+              tastes: selectedTags.length > 0 ? selectedTags : undefined,
+              grades: gradesPayload.length > 0 ? gradesPayload : undefined,
+              top_careers: rankedCareers.slice(0, 3) // Save top 3
+            }),
+          });
+        } catch (e) {
+          console.error("No se pudo guardar el resultado", e);
+        }
+      }
+
       router.push("/results");
     } catch (err) {
       setError("Error de comunicación con el servidor.");

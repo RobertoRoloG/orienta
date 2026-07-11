@@ -21,6 +21,7 @@ def get_matching_careers(payload: MatchingRequestSchema, db: Session = Depends(g
     for c in careers:
         # Extract the JSON profile and add the career name back into the dict for the algorithm
         c_dict = c.dimension_profile.copy()
+        c_dict["id"] = c.id
         c_dict["name"] = c.name
         c_dict["tags"] = c.tags
         c_dict["academic_weights"] = c.academic_weights
