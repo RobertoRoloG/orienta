@@ -16,6 +16,7 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3000",
         "https://orienta-m2jdlj12y-roberto-r-s-projects.vercel.app",
         "https://orienta.vercel.app",
+        "https://orienta-hazel.vercel.app",
     ]
     
     model_config = SettingsConfigDict(
