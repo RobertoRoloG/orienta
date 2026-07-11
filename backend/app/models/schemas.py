@@ -155,3 +155,23 @@ class TestResultRead(BaseModel):
     class Config:
         from_attributes = True
 
+class ContactMessageCreate(BaseModel):
+    first_name: str
+    last_name: str
+    email: EmailStr
+    message: str
+
+class ContactMessageRead(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    email: str
+    message: str
+    is_read: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class ContactMessageUpdate(BaseModel):
+    is_read: int

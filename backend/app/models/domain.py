@@ -57,3 +57,14 @@ class Subject(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
     description = Column(String, nullable=True)
+
+class ContactMessage(Base):
+    __tablename__ = "contact_messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    message = Column(Text, nullable=False)
+    is_read = Column(Integer, default=0, nullable=False) # 0 = false, 1 = true (SQLite compat)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

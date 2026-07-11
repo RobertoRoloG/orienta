@@ -3,14 +3,15 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
-import { ShieldAlert, Database, Award } from "lucide-react";
+import { ShieldAlert, Database, Award, Mail } from "lucide-react";
 import QuestionManager from "./components/QuestionManager";
 import CareerManager from "./components/CareerManager";
+import MessageManager from "./components/MessageManager";
 
 export default function AdminPage() {
   const { user, token, loading } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"questions" | "careers">("questions");
+  const [activeTab, setActiveTab] = useState<"questions" | "careers" | "messages">("questions");
 
   useEffect(() => {
     if (!loading && (!user || user.role !== "admin")) {
@@ -42,12 +43,19 @@ export default function AdminPage() {
           >
             <Award size={18}/> Carreras Profesionales
           </button>
+          <button 
+            onClick={() => setActiveTab("messages")}
+            className={`flex items-center gap-2 px-4 py-2 font-semibold transition whitespace-nowrap ${activeTab === "messages" ? "text-emerald-400 border-b-2 border-emerald-400" : "text-white/60 hover:text-white"}`}
+          >
+            <Mail size={18}/> Mensajes de Contacto
+          </button>
         </div>
         
         {token && (
           <div>
             {activeTab === "questions" && <QuestionManager token={token} />}
             {activeTab === "careers" && <CareerManager token={token} />}
+            {activeTab === "messages" && <MessageManager token={token} />}
           </div>
         )}
       </div>
