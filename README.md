@@ -15,7 +15,7 @@ El backend (`/backend`) actúa como el núcleo lógico y de procesamiento de la 
 - **Catálogo de Carreras:** Endpoints (`api/v1/endpoints/careers.py`) dedicados para proporcionar la lista de profesiones y el detalle de cada una de ellas.
 - **Inteligencia Artificial (LLMs):** Cuenta con integraciones iniciales con modelos de lenguaje (como Gemini) para enriquecer dinámicamente el contenido de las profesiones, analizar perfiles de manera inteligente y brindar recomendaciones precisas.
 - **Datos del Mercado Laboral:** Módulos (`services/market_data.py`) preparados para procesar información del mundo real sobre la demanda, salarios y proyecciones de las distintas profesiones.
-- **Base de Datos:** Almacena la información de manera estructurada utilizando SQLite (`orienta.db`) localmente.
+- **Base de Datos:** Almacena la información de manera estructurada y persistente utilizando **PostgreSQL** alojado en la nube (Neon), garantizando que los datos no se pierdan en producción. Cuenta con opción de fallback a SQLite para desarrollo local rápido.
 
 ### 2. Frontend (Next.js - React)
 La interfaz de usuario (`/app`) está construida utilizando el marco moderno de **Next.js (App Router)**. Su función es consumir la información estructurada del backend y presentarla al usuario mediante interfaces interactivas, como la visualización detallada de las carreras y, próximamente, el flujo completo del test de orientación.

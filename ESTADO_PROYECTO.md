@@ -8,7 +8,7 @@ El proyecto está dividido en dos partes principales que se comunican a través 
 
 *   **Frontend (Next.js con App Router):** Interfaz de usuario interactiva y moderna.
 *   **Backend (FastAPI - Python):** Núcleo de la lógica de negocio, cálculos y manejo de base de datos.
-*   **Base de Datos:** SQLite (`orienta.db`) local para almacenar la información de manera estructurada (carreras, perfiles, etc.).
+*   **Base de Datos:** **PostgreSQL** (alojado en la nube con Neon) para persistencia total de datos en producción, con soporte de fallback a SQLite (`orienta.db`) para desarrollo local.
 
 ## 2. Funcionalidades y Módulos Implementados
 
