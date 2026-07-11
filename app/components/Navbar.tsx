@@ -17,7 +17,7 @@ export default function Navbar() {
 
       <div className="flex gap-4 sm:gap-6 items-center text-sm sm:text-base">
         <Link href="/" className="hover:text-cyan-400 transition hidden sm:block">Menú Principal</Link>
-        <Link href="#" className="hover:text-cyan-400 transition hidden sm:block">Contáctanos</Link>
+        <Link href="/contacto" className="hover:text-cyan-400 transition hidden sm:block">Contáctanos</Link>
         {!loading && user ? (
           <button onClick={() => router.push("/profile")} className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition font-medium">
             <User size={16}/> {user.name}
