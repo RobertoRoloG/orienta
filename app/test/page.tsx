@@ -48,6 +48,12 @@ export default function TestPage() {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answer;
     setAnswers(newAnswers);
+
+    if (currentQuestion < questions.length - 1) {
+      setTimeout(() => {
+        setCurrentQuestion((prev) => prev + 1);
+      }, 250);
+    }
   };
 
   const toggleTag = (tag: string) => {
